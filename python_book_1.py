@@ -63,4 +63,22 @@ fhandle.close()
 
 
 
-#post请求 
+#post请求
+import urllib.request
+import urllib.parse
+url = 'http://www.baidu.com'
+postdata = urllib.parse.urlencode({
+	"name":"jack",
+	"pass":'123456'
+	}).encode('utf-8') #将数据使用urlencode处理后，使用encode设置为utf8编码
+req.add_header('User-Agent','Mozilla')
+data = urllib.request.urlopen(req).read()
+fhandle=open('./1.html','wq')
+fhandle.write(data)
+fhandle.close()
+
+
+# 使用代理服务器
+def use_prox
+
+
