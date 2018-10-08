@@ -50,3 +50,17 @@ fhandle = open('./1.html','wb')
 fhandle.write(data)
 fhandle.close()
 
+# 发送get请求
+keywd = 'hello'
+url = 'http://www.baidu.com/s?wd='+keywd
+# 构建一个request对象
+req=urllib.request.Request(url)
+# 打开对应的Request对象
+data=urllib.request.urlopen(req).read()
+fhandle=open('./1.html','wb')
+fhandle.write(data)
+fhandle.close()
+
+
+
+#post请求 
