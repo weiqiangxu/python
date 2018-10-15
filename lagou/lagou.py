@@ -12,7 +12,10 @@ import time
 import pickle
 import urllib
 import random
-import requests
+import urllib.request
+import sys
+from urllib import request, parse
+import json
 
 
 headers = {
@@ -30,6 +33,14 @@ headers = {
 			'X-Requested-With': 'XMLHttpRequest'
 			}
 
+# 发送post请求
+def postRequest(url,data):
+	data = parse.urlencode(data).encode('utf-8')
+	req = request.Request(url, headers=headers, data=data)
+	page = request.urlopen(req).read()
+	page = page.decode('utf-8')
+	return page
+
 
 # 定义爬虫
 def Crawler(savefile='info.pkl'):
@@ -38,13 +49,32 @@ def Crawler(savefile='info.pkl'):
 	for city in ['上海', '北京', '广州', '南京', '深圳', '杭州', '成都', '武汉', '天津']:
 		infoDict[city] = []
 		city_quote = urllib.parse.quote(city)
+		# 拼接源地址 referer
 		headers['Referer'] = 'https://www.lagou.com/jobs/list_?px=new&city=%s' % city_quote
 		url_now = url.format(city_quote)
 		for page in range(1, 31):
 			print('[INFO]: Get <%s>-<Page.%s>' % (city, page))
 			data = 'first=true&pn={}&kd=python'.format(page)
+			data = {"first":"true","pn":page,"kd":"python"}
+			res = postRequest(url,data)
+			print(res.json()['content']['positionResult']['result'])
+			sys.exit()
+
+			# 构建一个request对象
+			req=urllib.request.Request(url_now)
+			# 打开对应的Request对象
+			data=urllib.request.urlopen(req).read()
+			print(data)
+			sys.exit()
+
+
+
+			res = request.post(url_now, data=data.encode('utf-8'), headers=headers)
+			print(res)
+			sys.exit()
+
 			try:
-				res = requests.post(url_now, data=data.encode('utf-8'), headers=headers)
+				res = request.post(url_now, data=data.encode('utf-8'), headers=headers)
 				res_json = res.json()['content']['positionResult']['result']
 			except:
 				print('[Warning]: <%s>-<Page.%s> lost...' % (city, page))
