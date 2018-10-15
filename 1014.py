@@ -22,11 +22,17 @@ html_doc = get_html('http://www.umei.cc/')
 #创建一个BeautifulSoup解析对象
 soup = BeautifulSoup(html_doc,"html.parser",from_encoding="utf-8")
 
-#获取所有的图片地址链接
+# #获取所有的图片地址链接
 links = soup.find_all('img')
+i = 1
+
+# 记住for循环迭代字典是没有下标的
 for link in links:
-	urllib.request.urlretrieve(link['src'], 'tieba.jpg')
-    # print(link.name,link['src'])
+	urllib.request.urlretrieve(link['src'],link['src'].split('/')[-1]) #下载图片
+	print(link['src'].split('/')[-1])
+	i = i+1
+	print(i)
 
 # 终止程序
 sys.exit()
+
