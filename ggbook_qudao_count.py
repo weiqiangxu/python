@@ -39,7 +39,7 @@ def runlog_write(mess):
 #MySQL 操作函数
 def ggbook_channel(runsql):
     try:
-        my2 = MySQLdb.connect(host='192.168.180.94',port=3306,user='root',passwd='jb88',db='ggbook_channel')
+        my2 = MySQLdb.connect(host='localhost',port=3306,user='root',passwd='123456',db='test')
         cursor = my2.cursor()
         cursor.execute(runsql)
         my2.commit()

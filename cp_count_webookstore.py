@@ -12,10 +12,10 @@ import MySQLdb
 
 #日志文件目录
 filedir='/data/log/'
-mysqlhost='group13.mysql.book.lan'
+mysqlhost='localhost'
 mysqlport=3306
-mysqluser='alluser'
-mysqlpasswd='3GBookjiubang'
+mysqluser='root'
+mysqlpasswd='123456'
 mydb='advertise_user'
 # project=['webookstore']
 exclude_url=['/index.php?m=Home&c=Recharge&a=getAjaxHtml&tmp=wx',
