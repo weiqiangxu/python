@@ -16,6 +16,7 @@ import urllib.request
 import sys
 from urllib import request, parse
 import json
+import requests
 
 
 headers = {
@@ -33,15 +34,6 @@ headers = {
 			'X-Requested-With': 'XMLHttpRequest'
 			}
 
-# 发送post请求
-def postRequest(url,data):
-	data = parse.urlencode(data).encode('utf-8')
-	req = request.Request(url, headers=headers, data=data)
-	page = request.urlopen(req).read()
-	page = page.decode('utf-8')
-	return page
-
-
 # 定义爬虫
 def Crawler(savefile='info.pkl'):
 	url = 'https://www.lagou.com/jobs/positionAjax.json?px=new&city={}&needAddtionalResult=false'
@@ -55,26 +47,8 @@ def Crawler(savefile='info.pkl'):
 		for page in range(1, 31):
 			print('[INFO]: Get <%s>-<Page.%s>' % (city, page))
 			data = 'first=true&pn={}&kd=python'.format(page)
-			data = {"first":"true","pn":page,"kd":"python"}
-			res = postRequest(url,data)
-			print(res.json()['content']['positionResult']['result'])
-			sys.exit()
-
-			# 构建一个request对象
-			req=urllib.request.Request(url_now)
-			# 打开对应的Request对象
-			data=urllib.request.urlopen(req).read()
-			print(data)
-			sys.exit()
-
-
-
-			res = request.post(url_now, data=data.encode('utf-8'), headers=headers)
-			print(res)
-			sys.exit()
-
 			try:
-				res = request.post(url_now, data=data.encode('utf-8'), headers=headers)
+				res = requests.post(url_now, data=data.encode('utf-8'), headers=headers)
 				res_json = res.json()['content']['positionResult']['result']
 			except:
 				print('[Warning]: <%s>-<Page.%s> lost...' % (city, page))
@@ -93,7 +67,6 @@ def Crawler(savefile='info.pkl'):
 			time.sleep(random.randint(40, 60))
 	f = open(savefile, 'wb')
 	pickle.dump(infoDict, f)
-
 
 
 if __name__ == '__main__':
