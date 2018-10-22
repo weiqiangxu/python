@@ -2,68 +2,35 @@
 
 import _thread
 import time
+import urllib.request
+import pickle
 
 # 为线程定义一个函数
-def print_time( threadName, delay):
-   count = 0
-   while count < 5:
-      time.sleep(delay)
-      count += 1
-      print ("%s: %s" % ( threadName, time.ctime(time.time()) ))
+def print_time( url, file_name):
+  file = urllib.request.urlopen(url)
+  # 获取响应内容
+  print(file.getcode())
+  data = file.read()
+  # 存储
+  fp = open(file_name,'w')
+  fp.write(str(data))
+  fp.close()
 
-# 创建两个线程
-# try:
-#    _thread.start_new_thread( print_time, ("Thread-1", 1, ) )
-#    _thread.start_new_thread( print_time, ("Thread-2", 2, ) )
-# except:
-#    print ("Error: 无法启动线程")
+# 创建10个线程
+try:
+  _thread.start_new_thread(print_time,('http://localhost/test.php','1.log'))
+  _thread.start_new_thread(print_time,('http://localhost/test.php','2.log'))
+  _thread.start_new_thread(print_time,('http://localhost/test.php','3.log'))
+  _thread.start_new_thread(print_time,('http://localhost/test.php','4.log'))
+  _thread.start_new_thread(print_time,('http://localhost/test.php','5.log'))
+  _thread.start_new_thread(print_time,('http://localhost/test.php','6.log'))
+  _thread.start_new_thread(print_time,('http://localhost/test.php','7.log'))
+  _thread.start_new_thread(print_time,('http://localhost/test.php','8.log'))
+  _thread.start_new_thread(print_time,('http://localhost/test.php','9.log'))
+  _thread.start_new_thread(print_time,('http://localhost/test.php','10.log'))
+except:
+  print ("Error: 无法启动线程")
 
-# while 1:
-#    pass
-
-
-
-#!/usr/bin/python3
-
-import threading
-import time
-
-class myThread (threading.Thread):
-    def __init__(self, threadID, name, counter):
-        threading.Thread.__init__(self)
-        self.threadID = threadID
-        self.name = name
-        self.counter = counter
-    def run(self):
-        print ("开启线程： " + self.name)
-        # 获取锁，用于线程同步
-        threadLock.acquire()
-        print_time(self.name, self.counter, 3)
-        # 释放锁，开启下一个线程
-        threadLock.release()
-
-def print_time(threadName, delay, counter):
-    while counter:
-        time.sleep(delay)
-        print ("%s: %s" % (threadName, time.ctime(time.time())))
-        counter -= 1
-
-threadLock = threading.Lock()
-threads = []
-
-# 创建新线程
-thread1 = myThread(1, "Thread-1", 1)
-thread2 = myThread(2, "Thread-2", 2)
-
-# 开启新线程
-thread1.start()
-thread2.start()
-
-# 添加线程到线程列表
-threads.append(thread1)
-threads.append(thread2)
-
-# 等待所有线程完成
-for t in threads:
-    t.join()
-print ("退出主线程")
+# 等待子线程执行完成
+time.sleep(3)
+print('over')
